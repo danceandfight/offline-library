@@ -25,9 +25,7 @@ def get_book_collection_urls(url, start, end):
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'lxml')
         book_cards = soup.select('#content table td > a:first-child')
-        for card in book_cards:
-            url_path = card.get('href')
-            collection_url_list.append(url_path)
+        collection_url_list = [card.get('href') for card in book_cards]
     return collection_url_list
 
 if __name__ == '__main__':
