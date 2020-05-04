@@ -6,7 +6,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from livereload import Server, shell
 from more_itertools import chunked
 
-def fix_book_paths(books):
+def normalize_book_paths(books):
     books_with_normalized_paths = []
     for book in books:
         normalized_path = urllib.parse.quote(book['book_path'])
@@ -22,7 +22,7 @@ def on_reload():
     template = env.get_template('template.html')
     with open('book_db.json') as file:
         books = json.load(file)
-    books = fix_book_paths(books)
+    books = normalize_book_paths(books)
     paired_books = list(chunked(books, 2))
     book_rows_per_page = 10
     chunks = [paired_books[x:x+10] for x in range(0, len(paired_books), book_rows_per_page)]
