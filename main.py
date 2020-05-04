@@ -80,7 +80,7 @@ def main():
         book_title = get_book_title(soup)
         book_author = get_book_author(soup)
         book_id = url_path[2:-1]
-        book_filename = '{}.txt'.format(book_id)
+        book_filename = sanitize_filename(book_title) + '.txt'
         book_path = os.path.join('books', book_filename)
         book_cover = get_book_cover(soup, collection_url)
         img_name = book_cover.split('/')[-1]

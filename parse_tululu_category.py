@@ -11,7 +11,7 @@ def parse_page_numbers():
     parser.add_argument('-s', '--start_page', help='Start page number')
     parser.add_argument('-e', '--end_page', help='End page number')
     args = parser.parse_args()
-    start_page = int(args.start_page) - 1
+    start_page = int(args.start_page)
     end_page = int(args.end_page) + 1
     return start_page, end_page 
 
