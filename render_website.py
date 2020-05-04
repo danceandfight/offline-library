@@ -34,10 +34,7 @@ def on_reload():
             total_pages=total_pages,
             current_page=int(number)
         )
-        if number == 1:
-            filename = f'index.html'
-        else:
-            filename = f'index{number}.html'
+        filename = f'index{number}.html'
         with open(filename, 'w', encoding="utf8") as file:
             file.write(rendered_page)
 
