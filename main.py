@@ -68,6 +68,7 @@ def get_book_genre(soup):
 def main():
     collection_url = 'http://tululu.org/l55/'
     start_page, end_page = parse_page_numbers()
+    print(f"start_page: {start_page}", f"end_page: {end_page}")
     book_page_urls = get_book_collection_urls(collection_url, start_page, end_page)
     books = []
     for url_path in book_page_urls:
