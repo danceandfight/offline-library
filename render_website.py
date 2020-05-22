@@ -1,4 +1,5 @@
 import json
+import os
 import math
 import urllib.parse
 
@@ -35,7 +36,8 @@ def on_reload():
             current_page=int(number)
         )
         filename = f'index{number}.html'
-        with open(filename, 'w', encoding="utf8") as file:
+        full_path = os.path.join(os.getcwd(), 'pages', filename)
+        with open(full_path, 'w', encoding="utf8") as file:
             file.write(rendered_page)
 
 def main():
