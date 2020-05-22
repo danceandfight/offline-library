@@ -8,12 +8,8 @@ from urllib.parse import urljoin, urlparse
 from parse_tululu_category import get_book_collection_urls, parse_page_numbers
 
 
-def download_txt(url, filename, folder='books'):
-    response = requests.get(url, allow_redirects=False)
-    response.raise_for_status()
+def download_txt(response, filename, folder='books'):
     filename = sanitize_filename(filename) + '.txt'
-    if not response.status_code == 200:
-        return
     abs_path = os.path.abspath('.')
     os.makedirs(os.path.join(abs_path, folder), exist_ok=True)
     file_with_path = os.path.join(folder, filename)
@@ -88,6 +84,14 @@ def main():
         img_src = os.path.join('images', img_name)
         comments = get_comments(soup)
         genres = get_book_genre(soup)
+
+        book_download_url = 'http://tululu.org/txt.php?id={}'.format(book_id)
+        response = requests.get(book_download_url, allow_redirects=False)
+        response.raise_for_status()
+        if not response.status_code == 200:
+            continue
+        download_txt(response, book_title)
+
         book = {
                 'title': book_title,
                 'author': book_author,
@@ -97,11 +101,11 @@ def main():
                 'genres': genres
         }
         books.append(book)
-        book_download_url = 'http://tululu.org/txt.php?id={}'.format(book_id)
-        download_txt(book_download_url, book_title)
+        
         if check_image_file_existence(book_cover):
             continue
         download_image(book_cover, str(book_id))
+        
     with open('book_db.json', 'w') as file:
         json.dump(books, file)
 
