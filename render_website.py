@@ -14,6 +14,18 @@ def normalize_book_paths(books):
         book['book_path'] = normalized_path
         books_with_normalized_paths.append(book)
     return books_with_normalized_paths
+
+def update_paths_in_books_db(books):
+    updated_books = []
+    for book in books:
+        book_path = book['book_path']
+        fixed_book_path = f'../{book_path}'
+        book['book_path'] = fixed_book_path
+        img_src = book['img_src']
+        fixed_img_src = f'../{img_src}'
+        book['img_src'] = fixed_img_src
+        updated_books.append(book)
+    return updated_books
         
 def on_reload():
     env = Environment(
@@ -24,11 +36,13 @@ def on_reload():
     with open('book_db.json') as file:
         books = json.load(file)
     books = normalize_book_paths(books)
+    books = update_paths_in_books_db(books)
     paired_books = list(chunked(books, 2))
     book_rows_per_page = 10
     chunks = [paired_books[x:x+10] for x in range(0, len(paired_books), book_rows_per_page)]
     total_pages = math.ceil(len(paired_books)/book_rows_per_page)
     total_pages = range(1, total_pages+1)
+
     for number, chunk in enumerate(chunks, 1):
         rendered_page = template.render(
             books=chunk,
