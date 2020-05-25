@@ -2,6 +2,7 @@ import json
 import os
 import math
 import urllib.parse
+import glob
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from livereload import Server, shell
@@ -42,7 +43,8 @@ def on_reload():
     chunks = [paired_books[x:x+10] for x in range(0, len(paired_books), book_rows_per_page)]
     total_pages = math.ceil(len(paired_books)/book_rows_per_page)
     total_pages = range(1, total_pages+1)
-
+    existed_files = set(glob.glob('pages/*.html'))
+    created_files = set()
     for number, chunk in enumerate(chunks, 1):
         rendered_page = template.render(
             books=chunk,
@@ -50,9 +52,14 @@ def on_reload():
             current_page=int(number)
         )
         filename = f'index{number}.html'
+        created_files.add(f'pages/{filename}')
         full_path = os.path.join(os.getcwd(), 'pages', filename)
         with open(full_path, 'w', encoding="utf8") as file:
             file.write(rendered_page)
+    outdated_files = existed_files.difference(created_files)
+    for file in outdated_files:
+        os.remove(file)
+
 
 def main():
 
