@@ -13,7 +13,7 @@
   </head>
   <body>
     <div class="container">
-      <nav aria-label="Page navigation example">
+      <nav aria-label="Page navigation example" class="mt-3">
         <ul class="pagination">
           <li class="page-item{% if current_page==1 %} disabled{% endif %}">
             <a class="page-link" {% if current_page==1 %}href="#" tabindex="-1" aria-disabled="true"{% else %}href="index{{ current_page-1 }}.html"{% endif %}>Назад</a>
