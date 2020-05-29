@@ -1,6 +1,6 @@
 # Оффлайн библиотека
 
-Этот проект позволяет создать и пользоваться оффлайн библиотекой. Демонстрационная версия доступна по адресу: [https://danceandfight.github.io/offline-library/index1.html](https://danceandfight.github.io/offline-library/index1.html)
+Этот проект позволяет создать и пользоваться оффлайн библиотекой. Демонстрационная версия доступна по адресу: [https://danceandfight.github.io/offline-library/pages/index1.html](https://danceandfight.github.io/offline-library/pages/index1.html)
 
 Проект состоит из двух модулей: парсер книг с сайта tululu.org и генератора страниц оффлайн бибилиотеки.
 
