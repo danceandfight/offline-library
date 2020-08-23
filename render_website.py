@@ -28,7 +28,7 @@ def update_paths_in_books_db(books):
         updated_books.append(book)
     return updated_books
         
-def on_reload():
+def make_index_files():
     env = Environment(
         loader=FileSystemLoader('.'),
         autoescape=select_autoescape(['html', 'xml'])
@@ -63,9 +63,9 @@ def on_reload():
 
 def main():
 
-    on_reload()
+    make_index_files()
     server = Server()
-    server.watch('template.html', on_reload)
+    server.watch('template.html', make_index_files)
     server.serve(root='.')
 
 if __name__ == '__main__':
