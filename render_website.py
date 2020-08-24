@@ -1,12 +1,12 @@
 import json
 import os
-import math
 import urllib.parse
 import glob
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
-from livereload import Server, shell
+from livereload import Server
 from more_itertools import chunked
+
 
 def normalize_book_paths(books):
     books_with_normalized_paths = []
@@ -15,6 +15,7 @@ def normalize_book_paths(books):
         book['book_path'] = normalized_path
         books_with_normalized_paths.append(book)
     return books_with_normalized_paths
+
 
 def update_paths_in_books_db(books):
     updated_books = []
@@ -27,7 +28,8 @@ def update_paths_in_books_db(books):
         book['img_src'] = fixed_img_src
         updated_books.append(book)
     return updated_books
-        
+
+
 def make_index_files():
     env = Environment(
         loader=FileSystemLoader('.'),
@@ -40,9 +42,8 @@ def make_index_files():
     books = update_paths_in_books_db(books)
     paired_books = list(chunked(books, 2))
     book_rows_per_page = 10
-    chunks = [paired_books[x:x+10] for x in range(0, len(paired_books), book_rows_per_page)]
-    total_pages = math.ceil(len(paired_books)/book_rows_per_page)
-    total_pages = range(1, total_pages+1)
+    chunks = list(chunked(paired_books, book_rows_per_page))
+    total_pages = range(1, len(chunks) + 1)
     existed_files = set(glob.glob('pages/*.html'))
     created_files = set()
     for number, chunk in enumerate(chunks, 1):
@@ -67,6 +68,7 @@ def main():
     server = Server()
     server.watch('template.html', make_index_files)
     server.serve(root='.')
+
 
 if __name__ == '__main__':
     main()
