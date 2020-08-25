@@ -1,20 +1,10 @@
 import json
 import os
-import urllib.parse
 import glob
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from livereload import Server
 from more_itertools import chunked
-
-
-def normalize_book_paths(books):
-    books_with_normalized_paths = []
-    for book in books:
-        normalized_path = urllib.parse.quote(book['book_path'])
-        book['book_path'] = normalized_path
-        books_with_normalized_paths.append(book)
-    return books_with_normalized_paths
 
 
 def update_paths_in_books_db(books):
@@ -38,7 +28,6 @@ def make_index_files():
     template = env.get_template('template.html')
     with open('book_db.json') as file:
         books = json.load(file)
-    books = normalize_book_paths(books)
     books = update_paths_in_books_db(books)
     paired_books = list(chunked(books, 2))
     book_rows_per_page = 10
